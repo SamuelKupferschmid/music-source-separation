@@ -1,2 +1,4 @@
 ['remote "origin"']
-    url = azure://multitracks
+url = azure://multitracks/
+[core]
+remote = origin
