@@ -11,3 +11,4 @@ def create_model():
     model.compile(loss='categorical_crossentropy',
                 optimizer='RMSProp', metrics=['accuracy'])
     model.summary()
+    return model
