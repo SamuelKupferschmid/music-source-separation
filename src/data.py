@@ -34,7 +34,7 @@ def load_sample(song, track, data_root, duration, chunk_size=1):
 
 @tf.function
 def has_signal(timestep):
-    return tf.math.reduce_max(tf.abs(timestep)) > 0.05
+    return tf.math.reduce_max(tf.abs(timestep)) > 0.02
 
 @tf.function
 def create_features(ogg_filename, duration, chunk_size):
