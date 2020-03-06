@@ -31,8 +31,8 @@ export class ClassificationRequestComponent implements OnInit {
     )
   }
 
-  public setLabel(key: string, event: MatButtonToggleChange) {
-    this.dataService.setLabel(key, Number.parseInt(event.value));
+  public setLabel(key: string, index: string) {
+    this.dataService.setLabel(key, Number.parseInt(index));
 
     const next = this.dataService.getNextSample();
     this.router.navigate([next]);
