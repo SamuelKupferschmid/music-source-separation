@@ -1,11 +1,5 @@
-<app-file-uploader></app-file-uploader>
-
-<audio controls autoplay>
-  <source src="http://localhost:8080/0a14e0d2-5ef6-4c3c-bdd3-a872ac1d423d/9068883b-e60c-4262-bfb3-776cde370778.ogg" type="audio/ogg">
-</audio>
-
-<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-  <mat-button-toggle value="0">Vocal</mat-button-toggle>
-  <mat-button-toggle value="1">Instrument</mat-button-toggle>
-  <mat-button-toggle value="2">Other</mat-button-toggle>
-</mat-button-toggle-group>
+<div class="container" fxLayout="column" fxLayoutGap="10px">
+  <app-file-uploader (textLoaded)="loadDataset($event)"></app-file-uploader>
+  <router-outlet></router-outlet>
+  <button mat-button (click)="download()">Download</button>
+</div>
