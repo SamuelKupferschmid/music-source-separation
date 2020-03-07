@@ -1,10 +1,15 @@
 import sys
 import os
 import numpy as np
+import pandas as pd
 from model import create_model
 from data import load_al_trainingset, load_sample, load_csv
 
-
+# enable memory growth on demand
+import tensorflow as tf
+gpus = tf.config.experimental.list_physical_devices('GPU')
+print(gpus)
+if len(gpus) >0: tf.config.experimental.set_memory_growth(gpus[0], True)
 
 dataset_file = os.path.join('data','multitracks_al.txt')
 data_root = 'data'
@@ -28,4 +33,4 @@ for index, row in df.iterrows():
     df.at[index, 'instr_estimated'] = result[1]
     df.at[index, 'other_estimated'] = result[2]
 
-df.to_csv(dataset_file, sep='\t')
+df.to_csv(dataset_file, sep='\t', index=False)

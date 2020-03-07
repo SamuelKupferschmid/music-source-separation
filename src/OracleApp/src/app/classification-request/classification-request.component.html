@@ -1,0 +1,8 @@
+<div fxLayout="column" fxLayoutGap="5px" *ngIf="id$ | async as id">
+    <audio [src]="url" type="audio/ogg" *ngIf="url$ | async as url" controls autoplay>
+    </audio>
+    <div fxLayout="column" fxLayoutGap="5px" fxLayoutAlign="space-between">
+        <button *ngFor="let label of ['Vocal','Instrument','Other']; let i = index" (click)="setLabel(id, i)"
+            mat-flat-button color="primary">{{ label }} ({{ getPropbabily(id, i) | number:'1.0' }})</button>
+    </div>
+</div>

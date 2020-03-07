@@ -1,0 +1,5 @@
+<div class="container" fxLayout="column" fxLayoutGap="10px">
+  <app-file-uploader (textLoaded)="loadDataset($event)"></app-file-uploader>
+  <router-outlet></router-outlet>
+  <button mat-button (click)="download()">Download</button>
+</div>
