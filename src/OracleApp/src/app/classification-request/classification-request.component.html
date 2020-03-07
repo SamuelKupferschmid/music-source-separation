@@ -3,6 +3,6 @@
     </audio>
     <div fxLayout="column" fxLayoutGap="5px" fxLayoutAlign="space-between">
         <button *ngFor="let label of ['Vocal','Instrument','Other']; let i = index" (click)="setLabel(id, i)"
-            mat-flat-button color="primary">{{ label }}</button>
+            mat-flat-button color="primary">{{ label }} ({{ getPropbabily(id, i) | number:'1.0' }})</button>
     </div>
 </div>

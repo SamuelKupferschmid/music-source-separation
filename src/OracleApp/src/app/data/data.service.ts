@@ -82,6 +82,11 @@ export class DataService {
     this._unlabeledSamples.delete(key);
   }
 
+  public getEstimations(key): number[] {
+    const row = this._indieces[key];
+    return this._estimationIndicies.map(index => this._columns[index][row]);
+  }
+
   public downloadDataset() {
     const sep = '\t';
     let output = this._headers.join(sep);

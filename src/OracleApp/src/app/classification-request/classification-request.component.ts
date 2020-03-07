@@ -39,4 +39,8 @@ export class ClassificationRequestComponent implements OnInit {
 
   }
 
+  public getPropbabily(key: string, index: string) {
+    return this.dataService.getEstimations(key)[index];
+  }
+
 }
