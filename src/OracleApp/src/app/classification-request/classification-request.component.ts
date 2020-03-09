@@ -17,14 +17,9 @@ export class ClassificationRequestComponent implements OnInit {
 
   public id$: Observable<string>;
   public url$: Observable<SafeResourceUrl>;
-  public selected: any;
 
   ngOnInit(): void {
     this.id$ = this.route.paramMap.pipe(map(params => params.get('id')));
-
-    this.id$.subscribe(()=> {
-      this.selected = null;
-    })
 
     this.url$ = this.id$.pipe(
       map(id => this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:8080/' + this.dataService.getFilepath(id)))

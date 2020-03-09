@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import pandas as pd
 import tensorflow as tf
 import tensorflow_io as tfio
@@ -18,10 +19,19 @@ def load_al_trainingset(filename, data_root):
                                                   tf.cast(df['voc_oracle'].values, tf.int32),
                                                   tf.cast(df['instr_oracle'].values, tf.int32),
                                                   tf.cast(df['other_oracle'].values, tf.int32)))
-    return dataset.map(lambda song, track, duration, voc, instr, other: (
+    dataset = dataset.map(lambda song, track, duration, voc, instr, other: (
         create_features(data_root + song + os.path.sep + track, duration, 1),
         create_label([voc, instr, other], duration, 1))
-        ).unbatch().filter(lambda x,y: has_signal(x)).batch(4)
+        )
+        
+    return dataset.unbatch().filter(has_signal).batch(4)
+
+def get_class_weights(filename):
+    csv = load_csv(filename)
+    labels = csv[['voc_oracle','instr_oracle', 'other_oracle']].dropna().to_numpy()
+    values = np.sum(labels, axis=0)
+    values = np.max(values) / values
+    return { i : values[i] for i in range(3) }
 
 def load_csv(filename):
     data = pd.read_csv(filename, sep='\t')
@@ -30,11 +40,11 @@ def load_csv(filename):
 def load_sample(song, track, data_root, duration, chunk_size=1):
     filename = os.path.join(data_root, 'multitracks', song, track)
     dataset = tf.data.Dataset.from_tensors((filename, duration, tf.constant(chunk_size)))
-    return dataset.map(lambda file, dur, c: create_features(file, dur, c)).unbatch().filter(has_signal).batch(16)
+    return dataset.map(lambda file, dur, c: create_features(file, dur, c)).unbatch().filter(lambda x: has_signal(x,None)).batch(16)
 
 @tf.function
-def has_signal(timestep):
-    return tf.math.reduce_max(tf.abs(timestep)) > 0.02
+def has_signal(timestep, label):
+    return tf.math.reduce_max(tf.abs(timestep)) > 0.04
 
 @tf.function
 def create_features(ogg_filename, duration, chunk_size):

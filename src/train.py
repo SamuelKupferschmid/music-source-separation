@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 from model import create_model
-from data import load_al_trainingset, load_sample, load_csv
+from data import load_al_trainingset, load_sample, load_csv, get_class_weights
 
 # enable memory growth on demand
 import tensorflow as tf
@@ -13,24 +13,25 @@ if len(gpus) >0: tf.config.experimental.set_memory_growth(gpus[0], True)
 
 dataset_file = os.path.join('data','multitracks_al.txt')
 data_root = 'data'
-iteration = 0
 
 
-dataset = load_al_trainingset(dataset_file , data_root)
+import wandb
+from wandb.keras import WandbCallback
+wandb.init(project="multitrack", tags=['voc_instr_separation','AL'])
+#config={"epochs": 10, "iteration":1}
+config = wandb.config
+config.epochs = 8
+config.iteration = 1
+
 model = create_model()
 
-print('run training...')
-model.fit(dataset, epochs=10)
-model.save(os.path.join(f'models/al/{iteration}.h5'))
+dataset = load_al_trainingset(dataset_file , data_root)
+validation = dataset.take(200)
+train = dataset.skip(200)
+class_weight = get_class_weights(dataset_file)
 
-print('run inference...')
-df = load_csv(dataset_file)
-for index, row in df.iterrows():
-    sample = load_sample(row['song'],row['track'], data_root, row['duration'])
-    result = np.mean(model.predict(sample),axis=0)
-
-    df.at[index, 'voc_estimated'] = result[0]
-    df.at[index, 'instr_estimated'] = result[1]
-    df.at[index, 'other_estimated'] = result[2]
-
-df.to_csv(dataset_file, sep='\t', index=False)
+#print('run training...')
+modelpath = os.path.join(f'models/al/{config.iteration}.h5')
+model.fit(train, validation_data=validation, class_weight=class_weight, epochs=config.epochs,callbacks=[WandbCallback()])
+model.save(modelpath)
+model.save(os.path.join(wandb.run.dir, "model.h5"))
