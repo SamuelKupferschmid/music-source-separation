@@ -45,7 +45,7 @@ export class DataService {
         }
       }
 
-      this._probabilities[r] = maxProbabity;
+      this._probabilities[r-1] = maxProbabity;
     }
 
     this._sampleCount = lines.length - 1;
