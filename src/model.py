@@ -16,6 +16,6 @@ def create_model():
     model.add(BatchNormalization())
     model.add(Dense(3, activation='softmax'))
     model.compile(loss='categorical_crossentropy',
-                optimizer='RMSProp', metrics=['accuracy'])
+                optimizer='adam', metrics=['accuracy','binary_accuracy'])
     model.summary()
     return model
