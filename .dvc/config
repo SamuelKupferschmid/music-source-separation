@@ -1,4 +1,5 @@
-['remote "origin"']
-url = azure://multitracks/
 [core]
-remote = origin
+    remote = origin
+['remote "origin"']
+    url = azure://multitracks/
+    connection_string = DefaultEndpointsProtocol=https;AccountName=dvcdata;AccountKey=gvt0u6vFmE1Fmw2MxT///v5ERdW/AW8cCs0awD1pT1dYX7Z4Zw/yG72LJS0t5+DmKIR//OKNVmZd0NcA3d5hvw==;EndpointSuffix=core.windows.net
