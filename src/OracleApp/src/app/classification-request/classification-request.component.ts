@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators'
 import { Observable } from 'rxjs';
@@ -32,10 +32,6 @@ export class ClassificationRequestComponent implements OnInit {
     const next = this.dataService.getNextSample();
     this.router.navigate([next]);
 
-  }
-
-  public getPropbabily(key: string, index: string) {
-    return this.dataService.getEstimations(key)[index];
   }
 
 }
