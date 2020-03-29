@@ -11,7 +11,7 @@ gpus = tf.config.experimental.list_physical_devices('GPU')
 print(gpus)
 if len(gpus) >0: tf.config.experimental.set_memory_growth(gpus[0], True)
 
-dataset_file = os.path.join('data','multitracks_al.txt')
+dataset_file = os.path.join('data','classification_al','train.csv')
 data_root = 'data'
 
 
